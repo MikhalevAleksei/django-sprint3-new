@@ -147,3 +147,8 @@ dmypy.json
 
 # папки со статикой и медиа
 media/
+# Учебная статика и локальные файлы
+static/
+static-dev/
+html/
+.DS_Store
