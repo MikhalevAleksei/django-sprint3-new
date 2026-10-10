@@ -1,11 +1,11 @@
 from django.conf import settings
 from django.db import models
 
-from .constants import DISPLAY_TEXT_LENGTH, MAX_TITLE_LENGTH
+from .constants import DISPLAY_TEXT_LENGTH, MAX_CHAR_FIELD_LENGTH
 from .querysets import PostQuerySet
 
 
-class PublishedModel(models.Model):
+class IsPublishedCreatedAtAbstract(models.Model):
     is_published = models.BooleanField(
         'Опубликовано',
         default=True,
@@ -18,8 +18,8 @@ class PublishedModel(models.Model):
         ordering = ('created_at',)
 
 
-class Category(PublishedModel):
-    title = models.CharField('Заголовок', max_length=MAX_TITLE_LENGTH)
+class Category(IsPublishedCreatedAtAbstract):
+    title = models.CharField('Заголовок', max_length=MAX_CHAR_FIELD_LENGTH)
     description = models.TextField('Описание')
     slug = models.SlugField(
         'Идентификатор',
@@ -30,7 +30,7 @@ class Category(PublishedModel):
         ),
     )
 
-    class Meta(PublishedModel.Meta):
+    class Meta(IsPublishedCreatedAtAbstract.Meta):
         verbose_name = 'категория'
         verbose_name_plural = 'Категории'
 
@@ -38,10 +38,10 @@ class Category(PublishedModel):
         return self.title[:DISPLAY_TEXT_LENGTH]
 
 
-class Location(PublishedModel):
-    name = models.CharField('Название места', max_length=MAX_TITLE_LENGTH)
+class Location(IsPublishedCreatedAtAbstract):
+    name = models.CharField('Название места', max_length=MAX_CHAR_FIELD_LENGTH)
 
-    class Meta(PublishedModel.Meta):
+    class Meta(IsPublishedCreatedAtAbstract.Meta):
         verbose_name = 'местоположение'
         verbose_name_plural = 'Местоположения'
 
@@ -49,8 +49,8 @@ class Location(PublishedModel):
         return self.name[:DISPLAY_TEXT_LENGTH]
 
 
-class Post(PublishedModel):
-    title = models.CharField('Заголовок', max_length=MAX_TITLE_LENGTH)
+class Post(IsPublishedCreatedAtAbstract):
+    title = models.CharField('Заголовок', max_length=MAX_CHAR_FIELD_LENGTH)
     text = models.TextField('Текст')
     pub_date = models.DateTimeField(
         'Дата и время публикации',
